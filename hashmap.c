@@ -43,17 +43,18 @@ void insertMap(HashMap * map, char * key, void * value) {
 /*
     if (map->size + 1 > map->capacity * 0.70){
      enlarge(map);
+     //al parecer no es necesario en este caso como en la actividad en clases
 }
 */
-    long posicion = hash(key, map->capacity);
-    while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){
-        if (is_equal(map->buckets[posicion]->key, key)) {
+    long posicion = hash(key, map->capacity); //posicion sera el resultado de la funcion hash, lo que nos dara donde se ubica en el arreglo
+    while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){ //mientras que la casilla sea distinta de NULL o que no este vacia
+        if (is_equal(map->buckets[posicion]->key, key)) { //si ya existe la clave, no hagas nada
             map->buckets[posicion]->value = value;
             return;
         }
-        posicion = (posicion + 1) % map->capacity;
+        posicion = (posicion + 1) % map->capacity; //aumenta la posicion para seguir avanzando
     }
-    Pair * par =createPair(key, value);
+    Pair * par =createPair(key, value); //se crean 
     map->size++;
     map->buckets[posicion] = par;
 }
@@ -103,8 +104,18 @@ void eraseMap(HashMap * map,  char * key) {
 }
 
 Pair * searchMap(HashMap * map,  char * key) {   
-
-
+    long posicion = hash(key, map->capacity);
+    
+    while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){
+        if (map->buckets[posicion]->key == key){
+            Pair *buscado = (Pair*) calloc(1, sizeof(Pair));
+            buscado->key = key;
+            buscado->value = map->buckets[posicion]->value;
+            return buscado;
+        }else{
+            posicion = (posicion + 1) % map->capacity;
+        }
+    }
     return NULL;
 }
 
