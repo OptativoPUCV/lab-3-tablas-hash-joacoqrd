@@ -107,7 +107,7 @@ Pair * searchMap(HashMap * map,  char * key) {
     long posicion = hash(key, map->capacity);
     
     while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){
-        if (map->buckets[posicion]->key == key){
+        if (is_equal(map->buckets[posicion]->key, key) == 0){
             Pair *buscado = (Pair*) calloc(1, sizeof(Pair));
             buscado->key = key;
             buscado->value = map->buckets[posicion]->value;
