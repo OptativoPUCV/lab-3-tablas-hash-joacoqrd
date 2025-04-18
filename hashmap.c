@@ -108,10 +108,7 @@ Pair * searchMap(HashMap * map,  char * key) {
     
     while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){
         if (is_equal(map->buckets[posicion]->key, key) == 0){
-            Pair *buscado = (Pair*) calloc(1, sizeof(Pair));
-            buscado->key = key;
-            buscado->value = map->buckets[posicion]->value;
-            return buscado;
+            return map->buckets[posicion];
         }else{
             posicion = (posicion + 1) % map->capacity;
         }
