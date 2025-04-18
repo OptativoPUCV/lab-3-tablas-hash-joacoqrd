@@ -62,3 +62,9 @@ hashmap.c:102:21: error: initialization makes integer from pointer without a cas
                      ^~~~~~~~~
 cc1.exe: all warnings being treated as errors
 13b1ebb
+Fri, Apr 18, 2025  2:46:47 AM: 
+ hashmap.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests:  12|1
+total_score: 60/70
+c9084ee

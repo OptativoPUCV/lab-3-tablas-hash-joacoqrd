@@ -99,10 +99,14 @@ HashMap * createMap(long capacity) {
 }
 
 void eraseMap(HashMap * map,  char * key) {    
-    long posicion = searchMap (map, key);
+    Pair * borrar = searchMap (map, key);
     
-    map->buckets[posicion]->key = NULL;
-    map->buckets[posicion]->value = NULL;
+    if (borrar == NULL){
+        return;
+    }
+    
+    borrar->key = NULL;
+    borrar->value = NULL;
 
     map->size--;
 }
