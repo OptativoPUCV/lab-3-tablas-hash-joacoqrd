@@ -143,6 +143,17 @@ Pair * firstMap(HashMap * map) {
 }
 
 Pair * nextMap(HashMap * map) {
+    long posicion = map->current + 1;
 
+    while (posicion < map->capacity){
+        Pair * par = map->buckets[posicion];
+
+        if (map->buckets[posicion] != NULL && map->buckets[posicion]->key != NULL){
+            map->current = posicion;
+            return par;
+        }else{
+            posicion++;
+        }
+    }
     return NULL;
 }
