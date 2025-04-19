@@ -62,15 +62,15 @@ void insertMap(HashMap * map, char * key, void * value) {
 void enlarge(HashMap * map) {
     enlarge_called = 1; //no borrar (testing purposes)
 
-    long newCapacity = map->capacity * 2;
-    Pair ** newBuckets = (Pair **) calloc(newCapacity, sizeof(Pair *));
+    long newCapacity = map->capacity * 2; //duplicamos la capacidad
+    Pair ** newBuckets = (Pair **) calloc(newCapacity, sizeof(Pair *)); //calloc para que sea NULL
 
-    for (long i = 0; i < map->capacity; i++) {
-        Pair * current = map->buckets[i];
-        if (current != NULL && current->key != NULL) {
-            long index = hash(current->key, newCapacity);
+    for (long i = 0; i < map->capacity; i++) { //recorremos 
+        Pair * current = map->buckets[i]; //pasamos del viejo a un aux nueva o similar
+        if (current != NULL && current->key != NULL) { //si esta libre la casilla
+            long index = hash(current->key, newCapacity); //da la ubicacioon
 
-            while (newBuckets[index] != NULL) {
+            while (newBuckets[index] != NULL) { 
                 index = (index + 1) % newCapacity;
             }
 
@@ -79,81 +79,81 @@ void enlarge(HashMap * map) {
     }
 
     free(map->buckets); 
-    map->buckets = newBuckets;
-    map->capacity = newCapacity;
+    map->buckets = newBuckets; //actualizamos
+    map->capacity = newCapacity; //actualizamos
 }
 
 
 HashMap * createMap(long capacity) {
-    HashMap * map;
+    HashMap * map; //se crea el mapa
     
-    map = (HashMap *) calloc(1, sizeof(HashMap));    
+    map = (HashMap *) calloc(1, sizeof(HashMap));     //se consigue espacio para el mapa inicializando en NULL
     
-    map->capacity = capacity;
-    map->size = 0;
-    map->current = -1;
+    map->capacity = capacity;  //asisgnamos valores
+    map->size = 0; //asisgnamos valores
+    map->current = -1; //asisgnamos valores
 
-    map->buckets = (Pair **) calloc(capacity, sizeof(Pair *));
+    map->buckets = (Pair **) calloc(capacity, sizeof(Pair *)); //creamos para bucket
 
     return map;
 }
 
 void eraseMap(HashMap * map,  char * key) {    
-    Pair * borrar = searchMap (map, key);
+    Pair * borrar = searchMap (map, key); //buscamos el que hay que borrar y lo guardamos
     
-    if (borrar == NULL){
+    if (borrar == NULL){ //si no hay nada para borrar, termina
         return;
     }
     
-    borrar->key = NULL;
-    borrar->value = NULL;
+    borrar->key = NULL; //convierte la key en NULL para que no exista
+    borrar->value = NULL; //convierte el value en NULL para que no exista
 
-    map->size--;
+    map->size--; //achica en 1 
 }
 
 Pair * searchMap(HashMap * map,  char * key) {   
-    long posicion = hash(key, map->capacity);
+    long posicion = hash(key, map->capacity); //obtenemos la posicion en la que deberia estar
     
-    while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){
-        if (is_equal(map->buckets[posicion]->key, key) == 1){
-            map->current = posicion;
-            return map->buckets[posicion];
+    while (map->buckets[posicion] != NULL && map->buckets[posicion]->key!= NULL){ //mientras que la cassilal sea valida
+        if (is_equal(map->buckets[posicion]->key, key) == 1){ //si los datos concuerdan
+            map->current = posicion; //actualizamos el current al dato
+            return map->buckets[posicion]; //devolvemos la posicion
         }else{
-            posicion = (posicion + 1) % map->capacity;
+            posicion = (posicion + 1) % map->capacity; //si no es igual, ve al siguiente
         }
     }
     return NULL;
 }
 
 Pair * firstMap(HashMap * map) {
-    long posicion = 0;
+    long posicion = 0; //parte en 0 por logica
 
-    while (posicion < map->capacity){
-        Pair * primero = map->buckets[posicion];
+    while (posicion < map->capacity){ //recorremos
+        Pair * primero = map->buckets[posicion]; // ponemos lo que hay en la casilla 0
 
-        if (map->buckets[posicion] != NULL && map->buckets[posicion]->key != NULL){
-            map->current = posicion;
-            return primero;
+        if (map->buckets[posicion] != NULL && map->buckets[posicion]->key != NULL){ //si hay algo valido en la casilla actual
+            map->current = posicion; //actualizamos posicion
+            return primero; //devolvemos primero
 
         }else{
-            posicion++;
+            posicion++; //avanzamos a la siguiente
         }
     }
-    return NULL;
+    return NULL; //no encontro nada
 }
 
 Pair * nextMap(HashMap * map) {
-    long posicion = map->current + 1;
+    long posicion = map->current + 1; //ponemos el siguiente del actual
 
-    while (posicion < map->capacity){
-        Pair * par = map->buckets[posicion];
+    while (posicion < map->capacity){ //recorremos
+        Pair * par = map->buckets[posicion]; //ponemos lo que hay en la casilla actual
 
-        if (map->buckets[posicion] != NULL && map->buckets[posicion]->key != NULL){
-            map->current = posicion;
-            return par;
+        if (map->buckets[posicion] != NULL && map->buckets[posicion]->key != NULL){ //si hay algo valido en la casilal actual
+            map->current = posicion; //actualizamos posicion
+            return par; //devolvemos el par que es el next
         }else{
-            posicion++;
+            posicion++; //avanzamos a la siguiente
         }
     }
-    return NULL;
+    return NULL; //no hay next
 }
